@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+:root {
+  --app-background: #f5efe5;
+  --surface: #fffaf4;
+  --surface-strong: #fff3df;
+  --surface-soft: #f1e7d7;
+  --border-soft: #d8c6ac;
+  --ink-strong: #2f2417;
+  --ink-soft: #71583b;
+  --brand: #1f6a5d;
+  --warning: #bf6b1f;
+  --danger: #9c4335;
+  --success: #2b7a4b;
+}
+
+@theme inline {
+  --color-background: var(--app-background);
+  --color-foreground: var(--ink-strong);
+  --font-sans: "Trebuchet MS", "Segoe UI", sans-serif;
+  --font-mono: "Consolas", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.75), transparent 34%),
+    linear-gradient(180deg, #f8f1e8 0%, #efe2ce 100%);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink-strong);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--border-soft);
+  background: #fffdf8;
+  border-radius: 16px;
+  color: var(--ink-strong);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid color-mix(in srgb, var(--brand) 60%, white);
+  outline-offset: 2px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 6rem;
+}
+
+.panel {
+  border: 1px solid var(--border-soft);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--surface) 88%, white);
+  box-shadow: 0 10px 30px rgba(91, 67, 33, 0.08);
+}
+
+.pill-button {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+}
+
+.bottom-nav {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(245, 239, 229, 0) 0%, rgba(245, 239, 229, 0.96) 28%);
+}
+
+.bottom-nav-inner {
+  max-width: 30rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+}
