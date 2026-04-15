@@ -1,6 +1,6 @@
 export type TaskStatus = "not_done" | "in_progress" | "done";
 
-export type ViewName = "today" | "history" | "calendar" | "settings";
+export type ViewName = "today" | "history" | "settings";
 
 export interface Subject {
   id: string;
@@ -11,6 +11,7 @@ export interface Book {
   id: string;
   subjectId: string;
   name: string;
+  pageCount: number | null;
 }
 
 export interface Task {
@@ -19,7 +20,6 @@ export interface Task {
   subjectId: string;
   bookId: string;
   page: string;
-  arabicExercise: string;
   status: TaskStatus;
   createdAt: string;
   updatedAt: string;
@@ -42,11 +42,7 @@ export interface TaskDraft {
   subjectId: string;
   bookId: string;
   page: string;
-  arabicExercise: string;
-  status: TaskStatus;
 }
-
-const ARABIC_NAME = "arabic";
 
 export const STORAGE_KEY = "homeschool-daily-tracker";
 
@@ -89,12 +85,23 @@ export function formatDisplayDate(dateKey: string) {
   }).format(date);
 }
 
-export function isArabicSubject(subjectName: string | undefined) {
-  return subjectName?.trim().toLowerCase() === ARABIC_NAME;
-}
-
 export function isPastDay(dateKey: string, todayDateKey: string) {
   return dateKey < todayDateKey;
+}
+
+function parsePageCount(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+    return Math.floor(value);
+  }
+
+  if (typeof value === "string") {
+    const numericValue = Number.parseInt(value, 10);
+    if (Number.isFinite(numericValue) && numericValue > 0) {
+      return numericValue;
+    }
+  }
+
+  return null;
 }
 
 export function createDefaultData(todayDateKey: string): TrackerData {
@@ -112,13 +119,56 @@ export function createDefaultData(todayDateKey: string): TrackerData {
       { id: subjectEnglish, name: "English" },
     ],
     books: [
-      { id: createId(), subjectId: subjectIslamicStudies, name: "Foundations of Faith" },
-      { id: createId(), subjectId: subjectArabic, name: "Arabic Workbook 1" },
-      { id: createId(), subjectId: subjectMath, name: "Math Practice Book" },
-      { id: createId(), subjectId: subjectEnglish, name: "Reading and Writing" },
+      { id: createId(), subjectId: subjectIslamicStudies, name: "Foundations of Faith", pageCount: 120 },
+      { id: createId(), subjectId: subjectArabic, name: "Arabic Workbook 1", pageCount: 80 },
+      { id: createId(), subjectId: subjectMath, name: "Math Practice Book", pageCount: 160 },
+      { id: createId(), subjectId: subjectEnglish, name: "Reading and Writing", pageCount: 140 },
     ],
     tasks: [],
     days: [{ date: todayDateKey, createdAt: now }],
+  };
+}
+
+export function normalizeTrackerData(input: TrackerData, todayDateKey: string): TrackerData {
+  const subjects = [...input.subjects].sort((left, right) => left.name.localeCompare(right.name));
+  const books = [...input.books]
+    .map((book) => ({
+      id: book.id,
+      subjectId: book.subjectId,
+      name: book.name,
+      pageCount: parsePageCount((book as Book & { pageCount?: unknown }).pageCount),
+    }))
+    .sort((left, right) => left.name.localeCompare(right.name));
+  const tasks = input.tasks.map((task) => ({
+    id: task.id,
+    date: task.date,
+    subjectId: task.subjectId,
+    bookId: task.bookId,
+    page: task.page?.trim?.() ?? "",
+    status: task.status,
+    createdAt: task.createdAt,
+    updatedAt: task.updatedAt,
+    carriedFromTaskId: task.carriedFromTaskId,
+  }));
+  const daysByDate = new Map<string, DayRecord>();
+
+  input.days.forEach((day) => {
+    daysByDate.set(day.date, day);
+  });
+  tasks.forEach((task) => {
+    if (!daysByDate.has(task.date)) {
+      daysByDate.set(task.date, { date: task.date, createdAt: task.createdAt });
+    }
+  });
+  if (!daysByDate.has(todayDateKey)) {
+    daysByDate.set(todayDateKey, { date: todayDateKey, createdAt: new Date().toISOString() });
+  }
+
+  return {
+    subjects,
+    books,
+    tasks,
+    days: [...daysByDate.values()].sort((left, right) => left.date.localeCompare(right.date)),
   };
 }
 
@@ -162,8 +212,7 @@ export function createTask(dateKey: string, draft: TaskDraft): Task {
     subjectId: draft.subjectId,
     bookId: draft.bookId,
     page: draft.page.trim(),
-    arabicExercise: draft.arabicExercise.trim(),
-    status: draft.status,
+    status: "not_done",
     createdAt: now,
     updatedAt: now,
   };
@@ -174,8 +223,6 @@ export function emptyTaskDraft(): TaskDraft {
     subjectId: "",
     bookId: "",
     page: "",
-    arabicExercise: "",
-    status: "not_done",
   };
 }
 
@@ -205,8 +252,12 @@ export function getSubjectName(data: TrackerData, subjectId: string) {
   return data.subjects.find((subject) => subject.id === subjectId)?.name ?? "Unknown subject";
 }
 
+export function getBook(data: TrackerData, bookId: string) {
+  return data.books.find((book) => book.id === bookId);
+}
+
 export function getBookName(data: TrackerData, bookId: string) {
-  return data.books.find((book) => book.id === bookId)?.name ?? "Unknown book";
+  return getBook(data, bookId)?.name ?? "Deleted book";
 }
 
 export function countDoneTasks(tasks: Task[]) {

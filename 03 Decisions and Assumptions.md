@@ -4,7 +4,12 @@
 - Version 1 should be simple, mobile-first, and reliable
 - The first version is for one main student user
 - Books and subjects should be user-managed in Settings
+- Books should include a stored total page count
+- Books can be deleted from Settings without removing historical tasks
+- Delete account in the current local build means wiping all saved local tracker data on the device
 - Previous-day tasks remain in history and cannot be deleted
+- Version 1 task flow is subject, book, page, then save
+- Exercise tracking is out of scope for version 1
 
 ## Working Assumptions Pending Confirmation
 - Use Next.js for the web app
@@ -24,5 +29,6 @@
 - No parental mode in version 1
 - No push notifications in version 1
 - No advanced analytics in version 1
+- No exercise field in version 1
 - No over-custom offline sync engine in version 1
 - Start by proving the planner workflow locally before wiring in cloud authentication and sync

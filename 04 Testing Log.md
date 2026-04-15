@@ -9,13 +9,14 @@ Production build verification is currently blocked by Windows/OneDrive file lock
 - Sign-up and verification
 - Login and session persistence
 - Subject and book management
-- Task creation with Arabic conditional field
+- Book page count add, edit, and delete flows
+- Delete-account reset flow for local saved data
+- Task creation with subject, book, page, and save
 - Task status updates
 - Current-day deletion rules
 - Previous-day edit and delete restrictions
 - Daily carry-over behavior
 - History browsing
-- Calendar navigation
 - Offline viewing and offline task changes
 - Sync after reconnect
 

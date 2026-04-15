@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --app-background: #f5efe5;
-  --surface: #fffaf4;
-  --surface-strong: #fff3df;
-  --surface-soft: #f1e7d7;
-  --border-soft: #d8c6ac;
-  --ink-strong: #2f2417;
-  --ink-soft: #71583b;
-  --brand: #1f6a5d;
+  --app-background: #f6f1e8;
+  --surface: #fffdf9;
+  --surface-strong: #f1e7d8;
+  --surface-soft: #e8dbc7;
+  --border-soft: #d5c3aa;
+  --ink-strong: #2e2418;
+  --ink-soft: #6f5a42;
+  --brand: #24695c;
   --warning: #bf6b1f;
-  --danger: #9c4335;
-  --success: #2b7a4b;
+  --danger: #9a4134;
+  --success: #2f7d4d;
 }
 
 @theme inline {
@@ -27,8 +27,8 @@
 
 html {
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.75), transparent 34%),
-    linear-gradient(180deg, #f8f1e8 0%, #efe2ce 100%);
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.8), transparent 32%),
+    linear-gradient(180deg, #f7f0e6 0%, #ebddc7 100%);
 }
 
 body {
@@ -68,16 +68,55 @@ textarea:focus {
 
 .app-shell {
   min-height: 100vh;
-  max-width: 30rem;
+  max-width: 32rem;
   margin: 0 auto;
-  padding: 1rem 1rem 6rem;
+  padding: 1rem 1rem 2rem;
 }
 
-.panel {
+.panel,
+.hero-panel {
   border: 1px solid var(--border-soft);
   border-radius: 24px;
-  background: color-mix(in srgb, var(--surface) 88%, white);
+  background: color-mix(in srgb, var(--surface) 92%, white);
   box-shadow: 0 10px 30px rgba(91, 67, 33, 0.08);
+}
+
+.hero-panel {
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent),
+    color-mix(in srgb, var(--surface) 85%, white);
+}
+
+.hero-copy {
+  padding: 1.25rem 1.25rem 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 1.25rem;
+}
+
+.hero-stat,
+.step-card,
+.settings-group,
+.history-day-button {
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.hero-stat {
+  padding: 1rem;
+}
+
+.top-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 1rem;
 }
 
 .pill-button {
@@ -87,19 +126,69 @@ textarea:focus {
   font-weight: 600;
 }
 
-.bottom-nav {
-  position: fixed;
-  inset-inline: 0;
-  bottom: 0;
-  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
-  background: linear-gradient(180deg, rgba(245, 239, 229, 0) 0%, rgba(245, 239, 229, 0.96) 28%);
+.section-kicker {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
-.bottom-nav-inner {
-  max-width: 30rem;
-  margin: 0 auto;
+.step-card {
+  padding: 1rem;
+  list-style: none;
+}
+
+.history-day-list {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.history-day-button {
+  min-width: 13rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  text-align: left;
+}
+
+.history-day-button span {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-day-button small {
+  margin-top: 0.2rem;
+  color: var(--ink-soft);
+}
+
+.settings-group {
+  padding: 1rem;
+}
+
+.book-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 18px;
+  border: 1px solid var(--border-soft);
+  background: white;
+  padding: 0.9rem 1rem;
+}
+
+.book-edit-form {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.book-actions {
+  display: flex;
   gap: 0.5rem;
 }
 
@@ -107,4 +196,17 @@ textarea:focus {
   width: 0.65rem;
   height: 0.65rem;
   border-radius: 999px;
+}
+
+@media (max-width: 560px) {
+  .hero-grid,
+  .top-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .book-row,
+  .book-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

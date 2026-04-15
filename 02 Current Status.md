@@ -10,8 +10,11 @@ Homeschool Daily Tracker is a mobile-first homeschool daily planner for one stud
 - Created project memory files
 - Scaffolded a Next.js app in the `homeschool-daily-tracker` subfolder
 - Built the first mobile-first planner shell using local browser storage
-- Implemented Today, History, Calendar, and Settings screens
+- Implemented simplified Today, History, and Settings screens
 - Implemented task creation, editing, status updates, carry-over, and deletion rules
+- Removed the exercise step from version 1 task creation
+- Added book page counts and book deletion in Settings
+- Added a Settings action to delete the local account and reset saved app data
 - Verified source-code linting for the current app code
 
 ## What still needs to be done

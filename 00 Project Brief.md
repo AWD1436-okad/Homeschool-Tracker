@@ -12,7 +12,6 @@ The first version should be simple, clean, reliable, easy to use on a phone, and
 ## Main Screens
 - Today
 - History
-- Calendar
 - Settings
 - Sign up / login / verification
 
@@ -21,14 +20,13 @@ The first version should be simple, clean, reliable, easy to use on a phone, and
 2. Select Subject
 3. Select Book
 4. Enter Page
-5. If Subject is Arabic, enter Exercise
-6. Save task to today's list
+5. Save task to today's list
 
 ## Task Data
 - Subject
 - Book
+- Book page count stored in settings
 - Page
-- Arabic Exercise only when subject is Arabic
 - Status
 
 ## Task Status Options
@@ -53,15 +51,18 @@ When a new day begins:
 ## History and Calendar
 - App opens to Today
 - User can navigate to History
-- User can navigate to Calendar
+- History includes date browsing for saved days
 - Past daily records stay stored and visible
 
 ## Settings
 User can:
 - Add subjects
 - Add books under subjects
+- Store a page count for each book
 - Edit subjects
-- Edit books
+- Edit books with a visible page count field
+- Delete books
+- Delete the local account and all saved data on the device
 - Store subject and book options for future task creation
 
 Starter subject examples:
@@ -104,11 +105,11 @@ Email verification is also required for other security-related actions such as p
 - User can log in with email verification
 - User stays logged in until manual logout
 - User can add books in settings
-- User can create daily tasks using subject, book, page, and optional Arabic exercise
+- User can create daily tasks using subject, book, and page
 - User can update task status
 - Unfinished tasks carry into the next day
 - History is preserved
-- Calendar navigation works
+- History date browsing works
 - Current-day tasks can be edited and deleted
 - Previous-day tasks can be edited but not deleted
 - No day can be deleted
