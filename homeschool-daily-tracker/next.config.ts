@@ -5,7 +5,8 @@ import type { NextConfig } from "next";
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  distDir: ".next-build",
+  output: "export",
+  distDir: "out",
   turbopack: {
     root: projectRoot,
   },
