@@ -93,6 +93,9 @@ export default function Home() {
   const [editingBookId, setEditingBookId] = useState<string | null>(null);
   const [editingBookName, setEditingBookName] = useState("");
   const [editingBookPageCount, setEditingBookPageCount] = useState("");
+  const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
+  const [deleteAccountStep, setDeleteAccountStep] = useState<"confirm" | "password">("confirm");
+  const [deleteAccountPassword, setDeleteAccountPassword] = useState("");
   const [isOnline, setIsOnline] = useState(true);
 
   useEffect(() => {
@@ -333,11 +336,25 @@ export default function Home() {
     }
   };
 
+  const beginDeleteAccount = () => {
+    setShowDeleteAccountDialog(true);
+    setDeleteAccountStep("confirm");
+    setDeleteAccountPassword("");
+  };
+
+  const cancelDeleteAccount = () => {
+    setShowDeleteAccountDialog(false);
+    setDeleteAccountStep("confirm");
+    setDeleteAccountPassword("");
+  };
+
+  const confirmDeleteAccount = () => {
+    setDeleteAccountStep("password");
+  };
+
   const deleteAccount = () => {
-    const confirmed = window.confirm(
-      "Delete this account and all saved homeschool data on this device? This cannot be undone.",
-    );
-    if (!confirmed) {
+    if (deleteAccountPassword !== "DELETE") {
+      window.alert('Enter DELETE in the password box to confirm account deletion.');
       return;
     }
 
@@ -354,6 +371,7 @@ export default function Home() {
     setBookPageCount("");
     setBookSubjectId("");
     cancelBookEdit();
+    cancelDeleteAccount();
     window.alert("Your local account data has been deleted from this device.");
   };
 
@@ -810,7 +828,7 @@ export default function Home() {
                                     onClick={() => beginBookEdit(book.id)}
                                     type="button"
                                   >
-                                    Edit
+                                    Edit book
                                   </button>
                                   <button
                                     className="pill-button text-sm text-white"
@@ -818,7 +836,7 @@ export default function Home() {
                                     style={{ background: "var(--danger)" }}
                                     type="button"
                                   >
-                                    Delete
+                                    Delete book
                                   </button>
                                 </div>
                               </>
@@ -832,21 +850,91 @@ export default function Home() {
             </div>
           </section>
           <section className="panel p-4">
-            <p className="section-kicker">Danger zone</p>
-            <h3 className="text-lg font-semibold">Delete account</h3>
+            <p className="section-kicker">Account</p>
+            <h3 className="text-lg font-semibold">Account actions</h3>
             <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
-              This deletes your saved account data, subjects, books, tasks, and history from this
-              device.
+              Use this section to manage this local account on the device.
             </p>
-            <button
-              className="pill-button mt-4 w-full text-sm text-white"
-              onClick={deleteAccount}
-              style={{ background: "var(--danger)" }}
-              type="button"
-            >
-              Delete account
-            </button>
+            <div className="mt-4 rounded-[18px] border border-[var(--border-soft)] bg-white p-4">
+              <h4 className="text-base font-semibold">Delete account</h4>
+              <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
+                This deletes your saved account data, subjects, books, tasks, and history from this
+                device.
+              </p>
+              <button
+                className="pill-button mt-4 w-full text-sm text-white"
+                onClick={beginDeleteAccount}
+                style={{ background: "var(--danger)" }}
+                type="button"
+              >
+                Delete account
+              </button>
+            </div>
           </section>
+        </section>
+      ) : null}
+
+      {showDeleteAccountDialog ? (
+        <section className="panel mt-4 p-4">
+          <p className="section-kicker">Delete account</p>
+          {deleteAccountStep === "confirm" ? (
+            <>
+              <h3 className="text-lg font-semibold">Are you sure?</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
+                If you continue, the app will remove all saved local account data from this device.
+              </p>
+              <div className="dialog-actions mt-4">
+                <button
+                  className="pill-button border border-[var(--border-soft)] bg-white text-sm"
+                  onClick={cancelDeleteAccount}
+                  type="button"
+                >
+                  No, keep account
+                </button>
+                <button
+                  className="pill-button text-sm text-white"
+                  onClick={confirmDeleteAccount}
+                  style={{ background: "var(--danger)" }}
+                  type="button"
+                >
+                  Yes, continue
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h3 className="text-lg font-semibold">Enter password to delete</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
+                For this local version, type <strong>DELETE</strong> in the password box to confirm.
+              </p>
+              <label className="mt-4 block">
+                <span className="mb-2 block text-sm font-medium text-[var(--ink-soft)]">Password</span>
+                <input
+                  className="px-4 py-3"
+                  type="password"
+                  value={deleteAccountPassword}
+                  onChange={(event) => setDeleteAccountPassword(event.target.value)}
+                />
+              </label>
+              <div className="dialog-actions mt-4">
+                <button
+                  className="pill-button border border-[var(--border-soft)] bg-white text-sm"
+                  onClick={cancelDeleteAccount}
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  className="pill-button text-sm text-white"
+                  onClick={deleteAccount}
+                  style={{ background: "var(--danger)" }}
+                  type="button"
+                >
+                  Delete account now
+                </button>
+              </div>
+            </>
+          )}
         </section>
       ) : null}
     </main>

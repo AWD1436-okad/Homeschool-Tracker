@@ -172,8 +172,9 @@ textarea:focus {
 
 .book-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   gap: 0.75rem;
   border-radius: 18px;
   border: 1px solid var(--border-soft);
@@ -188,7 +189,14 @@ textarea:focus {
 }
 
 .book-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.dialog-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
@@ -204,9 +212,8 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
-  .book-row,
-  .book-actions {
-    flex-direction: column;
-    align-items: stretch;
+  .book-actions,
+  .dialog-actions {
+    grid-template-columns: 1fr;
   }
 }
